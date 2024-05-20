@@ -47,7 +47,7 @@ export const Signin = () => {
       try {
         console.log("Working on signin");
         const response = await axios.post(
-          "https://catering-app-backend.onrender.com/api/v1/signin",
+          "https:/catering-app-backend.onrender.com/api/v1/signin",
           data
         );
         console.log(response.data.msg);
