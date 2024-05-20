@@ -48,7 +48,7 @@ const Cater = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/catermenu/${catername}`
+          `https://catering-app-backend.onrender.com/api/v1/catermenu/${catername}`
         );
         const data = response.data;
         console.log(data);
@@ -73,7 +73,7 @@ const Cater = () => {
   };
 
   return (
-    <div className="h-full bg-blue-50">
+    <div className="h-full bg-blue-50 flex flex-col">
       <Navbar />
       <div className="flex flex-col h-full justify-center items-center mx-5 w-screen gap-5">
         <div className="flex justify-between items-center w-full mt-4">

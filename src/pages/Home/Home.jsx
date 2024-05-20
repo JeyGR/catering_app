@@ -13,7 +13,7 @@ const Home = () => {
     const fetchCater = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/getallcater"
+          "https://catering-app-backend.onrender.com/api/v1/getallcater"
         );
         const data = response.data;
         setcater(data.data);
@@ -28,7 +28,7 @@ const Home = () => {
     navigate("/login");
   };
   return (
-    <div className="h-screen w-screen bg-blue-50">
+    <div className="h-full w-full bg-blue-50 flex flex-col justify-between">
       <Navbar />
       <div className="flex flex-col justify-center items-center gap-5">
         <h3 className=" text-3xl">Available Catering:</h3>
@@ -41,7 +41,7 @@ const Home = () => {
             Back
           </button>
         </div>
-        <div className="flex flex-wrap gap-8 justify-center">
+        <div className="flex flex-wrap gap-8 justify-center ">
           {cater.map((item, index) => (
             <CateringCard
               key={index}
@@ -52,6 +52,9 @@ const Home = () => {
             />
           ))}
         </div>
+      </div>
+      <div>
+        <br />
       </div>
     </div>
   );

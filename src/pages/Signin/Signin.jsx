@@ -30,29 +30,39 @@ export const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ username, email, phone, pass });
-
-    const data = {
-      name: username,
-      email: email,
-      phone: phone,
-      pass: pass,
-    };
-
-    try {
-      console.log("Working on signin");
-      const response = await axios.post(
-        "http://localhost:3000/api/v1/signin",
-        data
-      );
-      console.log(response.data.msg);
-      if (response.data.msg === "Success") {
-        console.log("Signin success");
-        navigate("/login");
+    if (pass.length < 8 || !email || !pass) {
+      if (!email || !pass) {
+        alert("Must fill every fields");
       } else {
-        console.log(response.data.msg);
+        alert("Passoword must contain alteast 8 characters !");
       }
-    } catch (err) {
-      console.error("Signin error:", err);
+    } else {
+      const data = {
+        name: username,
+        email: email,
+        phone: phone,
+        pass: pass,
+      };
+
+      try {
+        console.log("Working on signin");
+        const response = await axios.post(
+          "https://catering-app-backend.onrender.com/api/v1/signin",
+          data
+        );
+        console.log(response.data.msg);
+        if (response.data.msg === "Success") {
+          console.log("Signin success");
+          alert(response.data.msg);
+          navigate("/login");
+        } else {
+          alert(response.data.msg);
+          console.log(response.data.msg);
+        }
+      } catch (err) {
+        alert("Check your credentials !");
+        console.error("Signin error:", err);
+      }
     }
   };
   return (

@@ -48,7 +48,7 @@ const DietPlan = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/catermenu/${catername}`
+          `https://catering-app-backend.onrender.com/api/v1/catermenu/${catername}`
         );
         const data = response.data;
         setBreakfast(data.data.filter((item) => item.time === "breakfast"));
