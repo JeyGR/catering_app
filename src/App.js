@@ -6,6 +6,9 @@ import { Login } from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import Cater from "./pages/Cater/Cater";
 import { DietPlan } from "./components";
+import { AuthProvider } from "./authContext";
+import LogintoContinue from "./pages/LogintoContinue/LogintoContinue";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const breakfast = [
@@ -46,21 +49,25 @@ function App() {
     },
   ];
   return (
-    <Router>
-      <Routes>
-        <Route path="" element={<Signin />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Home />} />
-        <Route
-          path="/cater/:catername"
-          element={<Cater breakfast={breakfast} />}
-        />
-        <Route
-          path="/dietplan/:catername"
-          element={<DietPlan breakfast={breakfast} />}
-        />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="" element={<Signin />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route
+            path="/cater/:catername"
+            element={<Cater breakfast={breakfast} />}
+          />
+          <Route
+            path="/dietplan/:catername"
+            element={<DietPlan breakfast={breakfast} />}
+          />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/notauthenticated" element={<LogintoContinue />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

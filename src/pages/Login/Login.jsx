@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import "./Login.css";
 import { useState } from "react";
 import { burger1, egg1, fries1, piza1 } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../authContext";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setemail] = useState("");
   const [pass, setpass] = useState("");
-
+  const { login, logout, isAuthenticated, setgmail } = useAuth();
   const handleemailChange = (e) => {
     setemail(e.target.value);
   };
@@ -25,36 +26,31 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({ email, pass });
-    if (pass.length < 8 || !email || !pass) {
-      if (!email || !pass) {
-        alert("Must fill every fields");
-      } else {
-        alert("Passoword must contain alteast 8 characters !");
-      }
-    } else {
-      const data = {
-        email: email,
-        pass: pass,
-      };
 
-      try {
-        console.log("Working on login");
-        const response = await axios.post(
-          "https://catering-app-backend.onrender.com/api/v1/login",
-          data
-        );
+    const data = {
+      email: email,
+      pass: pass,
+    };
+
+    try {
+      console.log("Working on login");
+      const response = await axios.post(
+        "https://catering-app-backend.onrender.com/api/v1/login",
+        data
+      );
+      console.log(response.data.msg);
+      if (response.data.msg === "Success") {
+        console.log("Login success");
+        login();
+        setgmail(email);
+        navigate("/home");
+      } else {
         console.log(response.data.msg);
-        if (response.data.msg === "Success") {
-          console.log("Login success");
-          navigate("/home");
-        } else {
-          alert(response.data.msg);
-          console.log(response.data.msg);
-        }
-      } catch (err) {
-        alert("Login failed, please check your credentials");
-        console.log("Signin error:", err);
+        logout();
       }
+    } catch (err) {
+      console.error("Signin error:", err);
+      logout();
     }
   };
 

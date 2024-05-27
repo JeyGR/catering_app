@@ -5,3 +5,5 @@ export { default as egg1 } from "./egg2.png";
 export { default as logo } from "./logo.png";
 export { default as profileimg } from "./profile.png";
 export { default as menuimg } from "./menu.png";
+export { default as float } from "./Float.png";
+export { default as popsicle } from "./popsicle.png";

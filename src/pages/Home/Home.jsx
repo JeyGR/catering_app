@@ -3,32 +3,45 @@ import "./Home.css";
 import { CateringCard, Navbar } from "../../components";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../authContext";
 import axios from "axios";
+import { emphasize } from "@mui/material";
+import TruncatedText from "../../components/TruncatedText/TruncatedText";
 
 const Home = () => {
   const navigate = useNavigate();
   const [cater, setcater] = useState([]);
+  const { isAuthenticated, gmail } = useAuth();
+
+  // useEffect(() => {
+  //   console.log(gmail);
+  // }, []);
 
   useEffect(() => {
-    const fetchCater = async () => {
-      try {
-        const response = await axios.get(
-          "https://catering-app-backend.onrender.com/api/v1/getallcater"
-        );
-        const data = response.data;
-        setcater(data.data);
-      } catch (err) {
-        console.log("Error in fetching cater details", err);
-      }
-    };
-    fetchCater();
+    console.log(gmail);
+    if (!isAuthenticated) {
+      navigate("/notauthenticated");
+    } else {
+      const fetchCater = async () => {
+        try {
+          const response = await axios.get(
+            "https://catering-app-backend.onrender.com/api/v1/getallcater"
+          );
+          const data = response.data;
+          setcater(data.data);
+        } catch (err) {
+          console.log("Error in fetching cater details", err);
+        }
+      };
+      fetchCater();
+    }
   }, []);
 
   const handleback = () => {
     navigate("/login");
   };
   return (
-    <div className="h-full w-full bg-blue-50 flex flex-col justify-between">
+    <div className="h-screen w-screen bg-blue-50">
       <Navbar />
       <div className="flex flex-col justify-center items-center gap-5">
         <h3 className=" text-3xl">Available Catering:</h3>
@@ -41,20 +54,17 @@ const Home = () => {
             Back
           </button>
         </div>
-        <div className="flex flex-wrap gap-8 justify-center ">
+        <div className="flex flex-wrap gap-8 justify-center">
           {cater.map((item, index) => (
             <CateringCard
               key={index}
               name={item.name}
               location={item.location}
-              about={item.about}
+              about={<TruncatedText text={item.about} limit={70} />}
               price={item.price}
             />
           ))}
         </div>
-      </div>
-      <div>
-        <br />
       </div>
     </div>
   );

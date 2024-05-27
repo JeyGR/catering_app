@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useAuth } from "../../authContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,6 +44,13 @@ const Cater = () => {
   const [breakfast, setBreakfast] = useState([]);
   const [lunch, setLunch] = useState([]);
   const [dinner, setDinner] = useState([]);
+  const { login, logout, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/notauthenticated");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +81,7 @@ const Cater = () => {
   };
 
   return (
-    <div className="h-full bg-blue-50 flex flex-col">
+    <div className="h-full bg-blue-50">
       <Navbar />
       <div className="flex flex-col h-full justify-center items-center mx-5 w-screen gap-5">
         <div className="flex justify-between items-center w-full mt-4">

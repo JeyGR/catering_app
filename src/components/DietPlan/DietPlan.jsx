@@ -11,6 +11,7 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import secret_key from "../.config";
+import { useAuth } from "../../authContext";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -41,8 +42,16 @@ const DietPlan = () => {
   const [dinner, setDinner] = useState([]);
   const [selectedFoods, setSelectedFoods] = useState([]);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [paymentsuccess, setpaymentsuccess] = useState(false);
   const navigate = useNavigate();
   const { catername } = useParams();
+  const { isAuthenticated, gmail } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/notauthenticated");
+    }
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +85,19 @@ const DietPlan = () => {
     0
   );
 
+  const addtouserProfile = async () => {
+    try {
+      const data = { gmail, catername, totalAmount };
+      const response = await axios.post(
+        "https://catering-app-backend.onrender.com/api/v1/addtoProfile",
+        data
+      );
+      console.log(response.data.msg);
+    } catch (error) {
+      console.log("Error in addtoUserProfile", error);
+    }
+  };
+
   const handleCheckout = (e) => {
     console.log("testing 1");
     e.preventDefault();
@@ -84,7 +106,7 @@ const DietPlan = () => {
         alert("Please select something");
       } else {
         var options = {
-          key: "rzp_test_UwuVpnICqTZAp0",
+          key: "rzp_test_IP8K3hDC0Rtlhv",
           key_secret: secret_key,
           amount: totalAmount * 100,
           currency: "INR",
@@ -92,6 +114,9 @@ const DietPlan = () => {
           description: "Test mode",
           handler: function (response) {
             alert(response.razorpay_payment_id);
+            addtouserProfile();
+            setpaymentsuccess(true);
+            console.log("Payment success");
           },
           prefill: {
             name: "Jey",
@@ -103,6 +128,11 @@ const DietPlan = () => {
           },
           theme: {
             color: "#4567h3",
+          },
+          modal: {
+            ondismiss: function () {
+              console.log("Payment failure");
+            },
           },
         };
         var pay = new window.Razorpay(options);
@@ -295,12 +325,14 @@ const DietPlan = () => {
             >
               Confirm Diet
             </button>
-            <button
-              className="bg-custom-blue-123 text-white p-2 rounded pl-4 pr-4 hover:bg-violet-950"
-              onClick={handleDownloadExcel}
-            >
-              Download as Excel
-            </button>
+            {paymentsuccess && (
+              <button
+                className="bg-custom-blue-123 text-white p-2 rounded pl-4 pr-4 hover:bg-violet-950"
+                onClick={handleDownloadExcel}
+              >
+                Download as Excel
+              </button>
+            )}
           </div>
         </div>
       </div>
