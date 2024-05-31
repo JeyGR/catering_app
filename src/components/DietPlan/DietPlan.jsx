@@ -89,7 +89,7 @@ const DietPlan = () => {
     try {
       const data = { gmail, catername, totalAmount };
       const response = await axios.post(
-        "https://catering-app-backend.onrender.com/api/v1/addtoProfile",
+        "https://catering-app-backend.onrender.com/api/v1/addodertoprofile",
         data
       );
       console.log(response.data.msg);

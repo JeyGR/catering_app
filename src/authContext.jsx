@@ -7,7 +7,9 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => JSON.parse(localStorage.getItem("isAuthenticated")) || false
   );
-  const [gmail, setgmail] = useState("");
+  const [gmail, setgmail] = useState(
+    () => JSON.parse(localStorage.getItem("gmail")) || ""
+  );
 
   useEffect(() => {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));

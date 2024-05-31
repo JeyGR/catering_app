@@ -8,7 +8,7 @@ import Cater from "./pages/Cater/Cater";
 import { DietPlan } from "./components";
 import { AuthProvider } from "./authContext";
 import LogintoContinue from "./pages/LogintoContinue/LogintoContinue";
-import Profile from "./pages/Profile/Profile";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 function App() {
   const breakfast = [
@@ -63,7 +63,7 @@ function App() {
             path="/dietplan/:catername"
             element={<DietPlan breakfast={breakfast} />}
           />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/notauthenticated" element={<LogintoContinue />} />
         </Routes>
       </Router>
