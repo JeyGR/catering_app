@@ -13,10 +13,6 @@ const Home = () => {
   const [cater, setcater] = useState([]);
   const { isAuthenticated, gmail } = useAuth();
 
-  // useEffect(() => {
-  //   console.log(gmail);
-  // }, []);
-
   useEffect(() => {
     console.log(gmail);
     if (!isAuthenticated) {
